@@ -51,7 +51,7 @@ func (r *Runner) Count() int {
 	return r.counter
 }
 
-// Next returns true if next execution are needed.
+// Next returns true if next execution is needed.
 // In case false, runner contains stopping reason.
 func (r *Runner) Next() bool {
 	if r.counter >= r.attempts {
