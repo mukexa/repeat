@@ -24,6 +24,14 @@ func WithDelay(d time.Duration) OptFunc {
 	}
 }
 
+// WithDelayFunc returns the OptFunc function
+// to set the delay between attempts using the custom function.
+func WithDelayFunc(fn func() time.Duration) OptFunc {
+	return func(r *Runner) {
+		r.delay = fn
+	}
+}
+
 // WithBackoffDelay returns the OptFunc function
 // to set the delay between attempts
 // using the exponential delay algorithm.
@@ -43,7 +51,7 @@ func WithBackoffDelay(startDelay, maxDelay, jitterDelay time.Duration) OptFunc {
 	}
 }
 
-// jitter returns a random value within [-span, span) range
+// jitter returns a random value within [-span, span] range
 func jitter(span time.Duration) time.Duration {
 	return time.Duration(float64(span) * (2.0*rand.Float64() - 1.0))
 }
