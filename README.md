@@ -1,6 +1,44 @@
 # repeat
----
 [![Build Status](https://travis-ci.org/fschnko/repeat.svg?branch=master)](https://travis-ci.org/fschnko/repeat)
+---
+REPEAT is a small, but powerful, library for cyclic or retries operations. 
+It allows you to convert code:
+```golang
+	const (
+		delay   = 5 * time.Second
+		attemps = 20
+	)
+
+	ticker := time.NewTicker(delay)
+	cancel := make(chan struct{})
+	for i := 0; i < attemps; i++ {
+		select {
+		case <-ticker.C:
+			err := callback()
+			if err != nil {
+				// handle error
+			}
+		case <-cancel:
+			ticker.Stop()
+			return
+		}
+	}
+```
+To code like this:
+```golang
+	const (
+		delay   = 5 * time.Second
+		attemps = 20
+	)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	err := repeat.Do(ctx, callback,
+		repeat.WithAttemps(attemps),
+		repeat.WithDelay(delay))
+	if err != nil {
+		// handle error
+	}
+```
 ---
 ### Examples
 
