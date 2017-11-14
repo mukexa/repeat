@@ -20,7 +20,7 @@ It allows you to convert code:
 			}
 		case <-cancel:
 			ticker.Stop()
-			return
+			break
 		}
 	}
 ```
