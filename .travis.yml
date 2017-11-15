@@ -1,5 +1,12 @@
 language: go
-script: go get github.com/fschnko/errpack
 
 go:
   - 1.9
+
+before_install:
+  - go get github.com/fschnko/errpack
+  - go get golang.org/x/tools/cmd/cover
+  - go get github.com/mattn/goveralls
+script:
+  - go test -v -covermode=count -coverprofile=coverage.out
+  - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN
