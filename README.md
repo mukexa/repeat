@@ -1,8 +1,11 @@
 # repeat
 [![Build Status](https://travis-ci.org/fschnko/repeat.svg?branch=master)](https://travis-ci.org/fschnko/repeat)
 ---
-REPEAT is a small, but powerful, library for cyclic or retries operations. 
-It allows you to convert code:
+REPEAT is a small library for cyclic or retries operations.
+Regardless of size, this is a very powerful library.
+It helps make the code more readable and elegant.
+
+For example, a code like this:
 ```golang
 	const (
 		delay   = 5 * time.Second
@@ -24,7 +27,7 @@ It allows you to convert code:
 		}
 	}
 ```
-To code like this:
+can be written as follows:
 ```golang
 	const (
 		delay   = 5 * time.Second
