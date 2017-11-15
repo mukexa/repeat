@@ -1,5 +1,5 @@
 # repeat
-[![Build Status](https://travis-ci.org/fschnko/repeat.svg?branch=master)](https://travis-ci.org/fschnko/repeat) [![Coverage Status](https://coveralls.io/repos/github/fschnko/repeat/badge.svg?branch=coveralls)](https://coveralls.io/github/fschnko/repeat?branch=coveralls)
+[![Build Status](https://travis-ci.org/fschnko/repeat.svg?branch=master)](https://travis-ci.org/fschnko/repeat) [![Coverage Status](https://coveralls.io/repos/github/fschnko/repeat/badge.svg?branch=master)](https://coveralls.io/github/fschnko/repeat?branch=master)
 ---
 REPEAT is a small library for cyclic or retries operations.
 Regardless of size, this is a very powerful library.
