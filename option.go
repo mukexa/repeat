@@ -41,21 +41,21 @@ func WithDelayFunc(fn func() time.Duration) OptFunc {
 // using the exponential delay algorithm.
 func WithBackoffDelay(startDelay, maxDelay, jitterDelay time.Duration) OptFunc {
 	return func(r *Runner) {
-		baseDelay := startDelay / 2
+		baseDelay := startDelay
+		if baseDelay > 1 {
+			baseDelay /= 2
+		}
 		r.delay = func() time.Duration {
 			baseDelay *= 2
 			if baseDelay > maxDelay {
 				baseDelay = maxDelay
 			}
-
-			baseDelay += jitter(jitterDelay)
-
-			return baseDelay
+			return baseDelay + jitter(jitterDelay)
 		}
 	}
 }
 
 // jitter returns a random value within [-span, span] range
 func jitter(span time.Duration) time.Duration {
-	return time.Duration(float64(span) * (2.0*rand.Float64() - 1.0))
+	return span * time.Duration(rand.Int31n(3)-1)
 }
