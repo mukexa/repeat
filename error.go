@@ -6,6 +6,7 @@ package repeat
 
 import "fmt"
 
+// ExecuteError is an error that represents the halting information.
 type ExecuteError struct {
 	Reason Reason
 	Count  int
@@ -13,8 +14,14 @@ type ExecuteError struct {
 }
 
 func (e *ExecuteError) Error() string {
-	if e.Err != nil {
-		return fmt.Sprintf("execution stopped after %d attempt, with error: %s", e.Count, e.Err)
+	msg := fmt.Sprintf("execution stopped after %d attempt", e.Count)
+
+	switch {
+	case e.Err != nil:
+		return msg + ", with error: " + e.Err.Error()
+	case e.Reason != "":
+		return msg + ", reason: " + e.Reason.String()
+	default:
+		return msg
 	}
-	return fmt.Sprintf("execution stopped after %d attempt, reason: %s", e.Count, e.Reason)
 }

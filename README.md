@@ -1,20 +1,26 @@
 # repeat
-[![Build Status](https://travis-ci.org/fschnko/repeat.svg?branch=master)](https://travis-ci.org/fschnko/repeat) [![Coverage Status](https://coveralls.io/repos/github/fschnko/repeat/badge.svg?branch=master)](https://coveralls.io/github/fschnko/repeat?branch=master)
+[![GoDoc](https://godoc.org/github.com/fschnko/repeat?status.svg)](https://godoc.org/github.com/fschnko/repeat)    [![Build Status](https://travis-ci.org/fschnko/repeat.svg?branch=master)](https://travis-ci.org/fschnko/repeat) [![Coverage Status](https://coveralls.io/repos/github/fschnko/repeat/badge.svg?branch=master)](https://coveralls.io/github/fschnko/repeat?branch=master)    [![Go Report Card](https://goreportcard.com/badge/github.com/fschnko/repeat)](https://goreportcard.com/report/github.com/fschnko/repeat)
+
 ---
 REPEAT is a small library for cyclic or retries operations.
 Regardless of size, this is a very powerful library.
 It helps make the code more readable and elegant.
 
+**Usage:**
+```shell
+go get github.com/fschnko/repeat
+```
+
 For example, a code like this:
 ```golang
 	const (
 		delay   = 5 * time.Second
-		attemps = 20
+		attempts = 20
 	)
 
 	ticker := time.NewTicker(delay)
 	cancel := make(chan struct{})
-	for i := 0; i < attemps; i++ {
+	for i := 0; i < attempts; i++ {
 		select {
 		case <-ticker.C:
 			err := callback()
@@ -31,12 +37,12 @@ can be written as follows:
 ```golang
 	const (
 		delay   = 5 * time.Second
-		attemps = 20
+		attempts = 20
 	)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	err := repeat.Do(ctx, callback,
-		repeat.WithAttemps(attemps),
+		repeat.WithAttempts(attempts),
 		repeat.WithDelay(delay))
 	if err != nil {
 		// handle error
@@ -55,9 +61,9 @@ can be written as follows:
 
 **Simple repeat**
 ```golang
-	const attemps = 10
+	const attempts = 10
 	err := repeat.Do(context.Background(), callback,
-		repeat.WithAttemps(attemps),
+		repeat.WithAttempts(attempts),
 	)
 	if err != nil {
 		// handle error
@@ -67,13 +73,13 @@ can be written as follows:
 **Repeat with context timeout**
 ```golang
 const (
-		attemps = 1000
+		attempts = 1000
 		timeout = 10 * time.Second
 	)
 
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	err := repeat.Do(ctx, callback,
-		repeat.WithAttemps(attemps),
+		repeat.WithAttempts(attempts),
 	)
 	cancel()
 	if err != nil {
@@ -84,12 +90,12 @@ const (
 **Repeat with delay**
 ```golang
 const (
-		attemps = 100
+		attempts = 100
 		delay = 10 * time.Second
 	)
 
 	err := repeat.Do(context.Background(), callback,
-		repeat.WithAttemps(attemps),
+		repeat.WithAttempts(attempts),
 		repeat.WithDelay(delay),
 	)
 	if err != nil {
