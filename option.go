@@ -12,9 +12,9 @@ import (
 // OptFunc function for runner configuration.
 type OptFunc func(*Runner)
 
-// WithAttemps returns the OptFunc function
+// WithAttempts returns the OptFunc function
 // to set the number of attempts.
-func WithAttemps(attempts int) OptFunc {
+func WithAttempts(attempts int) OptFunc {
 	return func(r *Runner) {
 		r.attempts = attempts
 	}

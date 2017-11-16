@@ -2,6 +2,7 @@ package repeat
 
 import (
 	"context"
+	"errors"
 	"fmt"
 )
 
@@ -23,16 +24,16 @@ func ExampleDo() {
 	// Do example
 }
 
-func ExampleDo_with_attemps() {
+func ExampleDo_attempts() {
 	callback := func() (err error) {
 		_, err = fmt.Println("Do example")
 		return
 	}
 
-	const attemps = 3
+	const attempts = 3
 
 	err := Do(context.Background(), callback,
-		WithAttemps(attemps))
+		WithAttempts(attempts))
 	if err != nil {
 		// handle error
 	}
@@ -40,4 +41,17 @@ func ExampleDo_with_attemps() {
 	// Do example
 	// Do example
 	// Do example
+}
+
+func ExampleDo_error() {
+	callback := func() (err error) {
+		return errors.New("callback error")
+	}
+
+	err := Do(context.Background(), callback)
+	if err != nil {
+		fmt.Println(err)
+	}
+	// Output:
+	// execution stopped after 1 attempt, with error: callback error
 }

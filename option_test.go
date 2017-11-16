@@ -77,3 +77,45 @@ func BenchmarkBackoffDelay(b *testing.B) {
 		r.delay()
 	}
 }
+
+func TestWithDelay(t *testing.T) {
+	const probeCount = 10
+
+	cases := []time.Duration{
+		time.Nanosecond,
+		time.Second,
+		time.Hour,
+	}
+	for _, delay := range cases {
+		r := NewRunner(context.Background(),
+			WithDelay(delay))
+
+		for i := 0; i < probeCount; i++ {
+			if d := r.delay(); d != delay {
+				t.Errorf("WithDelay got %d, want %d", d, delay)
+			}
+		}
+
+	}
+}
+
+func TestWithDelayFunc(t *testing.T) {
+	const probeCount = 10
+
+	cases := []time.Duration{
+		time.Nanosecond,
+		time.Second,
+		time.Hour,
+	}
+	for _, delay := range cases {
+		r := NewRunner(context.Background(),
+			WithDelayFunc(func() time.Duration { return delay }))
+
+		for i := 0; i < probeCount; i++ {
+			if d := r.delay(); d != delay {
+				t.Errorf("WithDelayFunc got %d, want %d", d, delay)
+			}
+		}
+
+	}
+}

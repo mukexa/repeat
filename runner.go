@@ -12,14 +12,18 @@ import (
 // DefaultAttempts default number of attempts.
 const DefaultAttempts = 5
 
-// Reason the execution stop reason.
-type Reason string
-
 // Reasons for execution stops.
 const (
 	AttemptsReached   Reason = "attempts is reached"
 	ContextDoneSignal Reason = "received completion signal from the context"
 )
+
+// Reason the execution stop reason.
+type Reason string
+
+func (r Reason) String() string {
+	return string(r)
+}
 
 // Runner main execution controller.
 type Runner struct {
