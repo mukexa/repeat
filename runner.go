@@ -10,7 +10,7 @@ import (
 )
 
 // DefaultAttempts default number of attempts.
-const DefaultAttempts = 5
+const DefaultAttempts = -1
 
 // Reasons for execution stops.
 const (
@@ -62,9 +62,11 @@ func (r *Runner) Count() int {
 // Next returns true if next execution is needed.
 // In case false, runner contains stopping reason.
 func (r *Runner) Next() bool {
-	if r.counter >= r.attempts {
-		r.reason = AttemptsReached
-		return false
+	if r.attempts > 0 {
+		if r.counter >= r.attempts {
+			r.reason = AttemptsReached
+			return false
+		}
 	}
 
 	// guarantee the first execute and avoid a delay before this.
@@ -84,6 +86,8 @@ func (r *Runner) Next() bool {
 
 // Execute runs callback function and returns callback function error.
 func (r *Runner) Execute(fn func() error) error {
-	r.counter++
+	if r.attempts > 0 || r.counter == 0 {
+		r.counter++
+	}
 	return fn()
 }
